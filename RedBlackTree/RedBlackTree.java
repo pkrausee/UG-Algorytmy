@@ -3,118 +3,134 @@ class RedBlackTree {
     private Record sentinel;
 
     RedBlackTree() {
-        this.root = null;
         this.sentinel = new Record();
+
+        this.root = this.sentinel;
     }
 
     public void insert(int value) {
-        Record element = new Record(value, true, null, null, null);
-        //Set Sentries
-        element.setLeftSon(sentinel);
-        element.setRightSon(sentinel);
+        //Set new element to be checked
+        Record node = insertBST(value);
 
-        insertBST(element, this.root);
-
-        while (element != this.root && element.getParent().isRed()) {
-            if (element.getParent() == element.getParent().getParent().getLeftSon()) {
+        while (node.getParent().isRed()) {
+            if (node.getParent() == node.getParent().getParent().getLeftSon()) {
                 //Left side
-                if (element.getParent().getParent().getRightSon().isRed()) {
+                if (node.getParent().getParent().getRightSon().isRed()) {
                     //First case
-                    element.getParent().setRed(false);
-                    element.getParent().getParent().getRightSon().setRed(false);
-                    element.getParent().getParent().setRed(true);
-                    element = element.getParent().getParent();
+                    node.getParent().setRed(false);
+                    node.getParent().getParent().getRightSon().setRed(false);
+                    node.getParent().getParent().setRed(true);
+                    node = node.getParent().getParent();
                 } else {
-                    if (element == element.getParent().getRightSon()) {
+                    if (node == node.getParent().getRightSon()) {
                         //Second case
-                        rotate(element);
-                        element = element.getLeftSon();
+                        node = node.getParent();
+                        rotateLeft(node);
                     }
-                    //Third case
-                    element.getParent().setRed(false);
-                    element.getParent().getParent().setRed(true);
-                    rotate(element.getParent());
+                    //ThirdCase
+                    node.getParent().setRed(false);
+                    node.getParent().getParent().setRed(true);
+                    rotateRight(node.getParent().getParent());
                 }
             } else {
                 //Right side
-                if (element.getParent().getParent().getLeftSon().isRed()) {
+                if (node.getParent().getParent().getLeftSon().isRed()) {
                     //First case
-                    element.getParent().setRed(false);
-                    element.getParent().getParent().getLeftSon().setRed(false);
-                    element.getParent().getParent().setRed(true);
-                    element = element.getParent().getParent();
+                    node.getParent().setRed(false);
+                    node.getParent().getParent().getLeftSon().setRed(false);
+                    node.getParent().getParent().setRed(true);
+                    node = node.getParent().getParent();
                 } else {
-                    if (element == element.getParent().getLeftSon()) {
+                    if (node == node.getParent().getLeftSon()) {
                         //Second case
-                        rotate(element);
-                        element = element.getRightSon();
+                        node = node.getParent();
+                        rotateRight(node);
                     }
-                    //Third case
-                    element.getParent().setRed(false);
-                    element.getParent().getParent().setRed(true);
-                    rotate(element.getParent());
+                //ThirdCase
+                node.getParent().setRed(false);
+                node.getParent().getParent().setRed(true);
+                rotateLeft(node.getParent().getParent());
                 }
             }
-
-            this.root.setRed(false);
         }
+
+        this.root.setRed(false);
     }
 
-    private void insertBST(Record newElement, Record position) {
-        if (this.root == null) {
-            this.root = newElement;
-            this.root.setRed(false);
-        } else {
-            if (position.getValue() <= newElement.getValue()) {
-                if (position.getRightSon() == sentinel) {
-                    position.setRightSon(newElement);
-                    newElement.setParent(position);
-                } else
-                    insertBST(newElement, position.getRightSon());
-            } else {
-                if (position.getLeftSon() == sentinel) {
-                    position.setLeftSon(newElement);
-                    newElement.setParent(position);
-                } else
-                    insertBST(newElement, position.getLeftSon());
-            }
-        }
-    }
+    private Record insertBST(int value) {
+        Record newElement = new Record(value, true, this.sentinel, this.sentinel, this.sentinel);
 
-    private void rotate(Record element) {
-        Record parent = element.getParent();
+        Record parent = this.sentinel;
+        Record iterator = this.root;
 
-        //Set new parents
-        if (parent.getParent() != null) {
-            if (parent == parent.getParent().getLeftSon())
-                parent.getParent().setLeftSon(element);
+        while (iterator != this.sentinel) {
+            parent = iterator;
+            if (newElement.getValue() < iterator.getValue())
+                iterator = iterator.getLeftSon();
             else
-                parent.getParent().setRightSon(element);
-        } else
-            this.root = element;
-
-        element.setParent(parent.getParent());
-        parent.setParent(element);
-
-        if (element == parent.getRightSon()) {
-            //Rotate to the left
-            element.getLeftSon().setParent(parent);
-            parent.setRightSon(element.getLeftSon());
-            element.setLeftSon(parent);
-        } else {
-            //Rotate to the right
-            element.getRightSon().setParent(parent);
-            parent.setLeftSon(element.getRightSon());
-            element.setRightSon(parent);
+                iterator = iterator.getRightSon();
         }
+
+        newElement.setParent(parent);
+
+        if (parent == this.sentinel) {
+            this.root = newElement;
+            newElement.setRed(false);
+        }
+        else if (newElement.getValue() < parent.getValue())
+            parent.setLeftSon(newElement);
+        else
+            parent.setRightSon(newElement);
+
+        return newElement;
+    }
+
+    public void rotateLeft(Record node) {
+        Record son = node.getRightSon();
+        node.setRightSon(son.getLeftSon());
+
+        if (son.getLeftSon() != this.sentinel)
+            son.getLeftSon().setParent(node);
+
+        son.setParent(node.getParent());
+
+        if (node.getParent() == this.sentinel)
+            this.root = son;
+        else if (node == node.getParent().getLeftSon())
+            node.getParent().setLeftSon(son);
+        else
+            node.getParent().setRightSon(son);
+
+        son.setLeftSon(node);
+        node.setParent(son);
+    }
+
+    public void rotateRight(Record node) {
+        Record son = node.getLeftSon();
+        node.setLeftSon(son.getRightSon());
+
+        if (son.getRightSon() != this.sentinel)
+            son.getRightSon().setParent(node);
+
+        son.setParent(node.getParent());
+
+        if (node.getParent() == this.sentinel)
+            this.root = son;
+        else if (node == node.getParent().getLeftSon())
+            node.getParent().setLeftSon(son);
+        else
+            node.getParent().setRightSon(son);
+
+        son.setRightSon(node);
+        node.setParent(son);
     }
 
     public int countBlackNodes(Record position) {
         //Returns number of black nodes in current position
-        if(position == sentinel)
+        if (position == sentinel)
             return 0;
 
-        if(position.getLeftSon() == this.sentinel && position.getRightSon() == this.sentinel)
+        if (position.getLeftSon() == this.sentinel && position.getRightSon() == this.sentinel)
             return position.isRed() ? 0 : 1;
 
         return countBlackNodes(position.getLeftSon()) + countBlackNodes(position.getRightSon()) + (position.isRed() ? 0 : 1);
@@ -122,10 +138,10 @@ class RedBlackTree {
 
     public int countRedNodes(Record position) {
         //Returns number of red nodes in current position
-        if(position == sentinel)
+        if (position == sentinel)
             return 0;
 
-        if(position.getLeftSon() == this.sentinel && position.getRightSon() == this.sentinel)
+        if (position.getLeftSon() == this.sentinel && position.getRightSon() == this.sentinel)
             return position.isRed() ? 1 : 0;
 
         return countRedNodes(position.getLeftSon()) + countRedNodes(position.getRightSon()) + (position.isRed() ? 1 : 0);
@@ -145,17 +161,17 @@ class RedBlackTree {
         return Math.min(minDepth(node.getLeftSon()), minDepth(node.getRightSon())) + 1;
     }
 
-    public void printRecord(Record r, int size) {
+    public void printNode(Record node, int size) {
         //Simple print for visualization
-        if (r.getRightSon() != this.sentinel)
-            printRecord(r.getRightSon(), size + 2);
+        if (node.getRightSon() != this.sentinel)
+            printNode(node.getRightSon(), size + 2);
 
         for (int i = 0; i < size; i++)
             System.out.print(" ");
-        System.out.println(r);
+        System.out.println(node);
 
-        if (r.getLeftSon() != this.sentinel)
-            printRecord(r.getLeftSon(), size + 2);
+        if (node.getLeftSon() != this.sentinel)
+            printNode(node.getLeftSon(), size + 2);
     }
 
     public Record getRoot() {
