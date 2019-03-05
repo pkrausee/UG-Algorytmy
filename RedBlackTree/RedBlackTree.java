@@ -102,8 +102,26 @@ class RedBlackTree {
         node2.setParent(node1.getParent());
     }
 
-    private void find(int value) {
-        System.out.println("TBD");
+    public Record find(int value) {
+        //Find the first occurrence of given value
+        //Null if given value doesn't occur in this set
+        if (this.root == this.sentinel) {
+            return null;
+        } else {
+            Record temp = this.root;
+
+            while (temp != this.sentinel && temp.getValue() != value) {
+                if (temp.getValue() > value)
+                    temp = temp.getLeftSon();
+                else
+                    temp = temp.getRightSon();
+            }
+
+            if (temp == this.sentinel)
+                return null;
+            else
+                return temp;
+        }
     }
 
     private void rotateLeft(Record node) {
