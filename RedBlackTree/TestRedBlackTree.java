@@ -16,6 +16,14 @@ class TestRedBlackTree {
 
         rbt.printNode(rbt.getRoot(), 0);
 
+        System.out.println("Po usunieciu: ");
+
+        rbt.delete(5);
+        rbt.delete(6);
+        rbt.delete(2);
+
+        rbt.printNode(rbt.getRoot(), 0);
+
         System.out.println("Max glebokosc: " + rbt.maxDepth(rbt.getRoot()));
         System.out.println("Min glebokosc: " + rbt.minDepth(rbt.getRoot()));
         System.out.println("Czarni synowie: " + rbt.countBlackNodes(rbt.getRoot()));

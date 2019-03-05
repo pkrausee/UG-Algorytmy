@@ -9,7 +9,7 @@ class RedBlackTree {
     }
 
     public void insert(int value) {
-        //Set new element to be checked
+        //Check new element
         Record node = insertBST(value);
 
         while (node.getParent().isRed()) {
@@ -86,8 +86,121 @@ class RedBlackTree {
         return newElement;
     }
 
-    public void delete(Record node) {
-        System.out.println("TBD");
+    public void delete (int value) {
+        //Check deleted position
+        Record node = find(value);
+
+        if(node != null) {
+            node = deleteBST(node);
+
+            if(node != null) {
+                Record brother;
+
+                while(node != this.root && !node.isRed()) {
+                    if(node == node.getParent().getLeftSon()) {
+                        //Left side
+                        brother = node.getParent().getRightSon();
+                        if(brother.isRed()) {
+                            //First case
+                            brother.setRed(false);
+                            node.getParent().setRed(true);
+                            rotateLeft(node.getParent());
+                            brother = node.getParent().getLeftSon();
+                        }
+
+                        if(!brother.getLeftSon().isRed() && !brother.getRightSon().isRed()) {
+                            //Second case
+                            brother.setRed(true);
+                            node = node.getParent();
+                        } else {
+                            if(!brother.getRightSon().isRed()) {
+                                //Third case
+                                brother.getLeftSon().setRed(false);
+                                brother.setRed(true);
+                                rotateRight(brother);
+                                brother = node.getParent().getRightSon();
+                            }
+                            //Fourth case
+                            brother.setRed(node.getParent().isRed());
+                            node.getParent().setRed(false);
+                            brother.getRightSon().setRed(false);
+                            rotateLeft(node.getParent());
+                            node = this.root;
+                        }
+                    } else {
+                        //Right side
+                        brother = node.getParent().getLeftSon();
+                        if(brother.isRed()) {
+                            //First case
+                            brother.setRed(false);
+                            node.getParent().setRed(true);
+                            rotateLeft(node.getParent());
+                            brother = node.getParent().getRightSon();
+                        }
+
+                        if(!brother.getLeftSon().isRed() && !brother.getRightSon().isRed()) {
+                            //Second case
+                            brother.setRed(true);
+                            node = node.getParent();
+                        } else {
+                            if(!brother.getLeftSon().isRed()) {
+                                //Third case
+                                brother.getRightSon().setRed(false);
+                                brother.setRed(true);
+                                rotateRight(brother);
+                                brother = node.getParent().getLeftSon();
+                            }
+                            //Fourth case
+                            brother.setRed(node.getParent().isRed());
+                            node.getParent().setRed(false);
+                            brother.getLeftSon().setRed(false);
+                            rotateLeft(node.getParent());
+                            node = this.root;
+                        }
+                    }
+                }
+
+                node.setRed(false);
+            }
+        }
+    }
+
+    private Record deleteBST(Record node) {
+        //Delete element (BinarySearchTree algorithm)
+        //Returns node that needs to be fixed or null if tree doesn't need fixing
+
+        Record nodeToFix; //Node that is missing black sons
+        Record newNode = node; //Deleted position
+        boolean newNode_orgColor = newNode.isRed();
+
+        if (node.getLeftSon() == this.sentinel) {
+            nodeToFix = node.getRightSon();
+            transplantNode(node, node.getRightSon());
+        } else if (node.getRightSon() == this.sentinel) {
+            nodeToFix = node.getLeftSon();
+            transplantNode(node ,node.getLeftSon());
+        } else {
+            newNode = findMin(node.getRightSon());
+            newNode_orgColor = newNode.isRed();
+            nodeToFix = newNode.getRightSon();
+            if(newNode.getParent() == node) {
+                nodeToFix.setParent(newNode);
+            } else {
+                transplantNode(newNode, newNode.getRightSon());
+                newNode.setRightSon(node.getRightSon());
+                newNode.getRightSon().setParent(newNode);
+            }
+            transplantNode(node, newNode);
+            newNode.setLeftSon(node.getLeftSon());
+            newNode.getLeftSon().setParent(newNode);
+            newNode.setRed(node.isRed());
+        }
+
+        if(!newNode_orgColor){
+            return nodeToFix;
+        }
+
+        return null;
     }
 
     private void transplantNode(Record node1, Record node2) {
@@ -102,7 +215,7 @@ class RedBlackTree {
         node2.setParent(node1.getParent());
     }
 
-    public Record find(int value) {
+    private Record find(int value) {
         //Find the first occurrence of given value
         //Null if given value doesn't occur in this set
         if (this.root == this.sentinel) {
@@ -122,6 +235,16 @@ class RedBlackTree {
             else
                 return temp;
         }
+    }
+
+    public Record findMin (Record node) {
+        //Find minimum in current node
+
+        while(node.getLeftSon() != this.sentinel) {
+            node = node.getLeftSon();
+        }
+
+        return node;
     }
 
     private void rotateLeft(Record node) {
