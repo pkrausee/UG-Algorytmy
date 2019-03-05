@@ -58,6 +58,7 @@ class RedBlackTree {
     }
 
     private Record insertBST(int value) {
+        //Insert new element (BinarySearchTree algorithm)
         Record newElement = new Record(value, true, this.sentinel, this.sentinel, this.sentinel);
 
         Record parent = this.sentinel;
@@ -85,7 +86,27 @@ class RedBlackTree {
         return newElement;
     }
 
-    public void rotateLeft(Record node) {
+    public void delete(Record node) {
+        System.out.println("TBD");
+    }
+
+    private void transplantNode(Record node1, Record node2) {
+        //Change subtrees
+        if(node1.getParent() == this.sentinel)
+            this.root = node2;
+        else if (node1 == node1.getParent().getLeftSon())
+            node1.getParent().setLeftSon(node2);
+        else
+            node1.getParent().setRightSon(node2);
+
+        node2.setParent(node1.getParent());
+    }
+
+    private void find(int value) {
+        System.out.println("TBD");
+    }
+
+    private void rotateLeft(Record node) {
         Record son = node.getRightSon();
         node.setRightSon(son.getLeftSon());
 
@@ -105,7 +126,7 @@ class RedBlackTree {
         node.setParent(son);
     }
 
-    public void rotateRight(Record node) {
+    private void rotateRight(Record node) {
         Record son = node.getLeftSon();
         node.setLeftSon(son.getRightSon());
 
