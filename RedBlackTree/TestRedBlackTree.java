@@ -3,24 +3,19 @@ class TestRedBlackTree {
 
         RedBlackTree rbt = new RedBlackTree();
 
-        rbt.insert(6);
-        rbt.insert(5);
-        rbt.insert(2);
         rbt.insert(4);
         rbt.insert(2);
+        rbt.insert(8);
         rbt.insert(6);
-        rbt.insert(7);
-        rbt.insert(4);
-        rbt.insert(7);
-        rbt.insert(1);
+        rbt.insert(12);
+        rbt.insert(10);
+        rbt.insert(14);
 
         rbt.printNode(rbt.getRoot(), 0);
 
-        System.out.println("Po usunieciu: ");
+        System.out.println("----------------------------");
 
-        rbt.delete(5);
-        rbt.delete(6);
-        rbt.delete(2);
+        rbt.insert(9);
 
         rbt.printNode(rbt.getRoot(), 0);
 
@@ -29,5 +24,14 @@ class TestRedBlackTree {
         System.out.println("Czarni synowie: " + rbt.countBlackNodes(rbt.getRoot()));
         System.out.println("Czerwoni synowie: " + rbt.countRedNodes(rbt.getRoot()));
 
+        System.out.println("----------------------------");
+
+        rbt.findPRO(9);
+
+        System.out.println("----------------------------");
+
+        rbt.delete(12);
+
+        rbt.printNode(rbt.getRoot(), 0);
     }
 }

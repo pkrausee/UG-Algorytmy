@@ -134,7 +134,7 @@ class RedBlackTree {
                             //First case
                             brother.setRed(false);
                             node.getParent().setRed(true);
-                            rotateLeft(node.getParent());
+                            rotateRight(node.getParent());
                             brother = node.getParent().getRightSon();
                         }
 
@@ -147,14 +147,14 @@ class RedBlackTree {
                                 //Third case
                                 brother.getRightSon().setRed(false);
                                 brother.setRed(true);
-                                rotateRight(brother);
+                                rotateLeft(brother);
                                 brother = node.getParent().getLeftSon();
                             }
                             //Fourth case
                             brother.setRed(node.getParent().isRed());
                             node.getParent().setRed(false);
                             brother.getLeftSon().setRed(false);
-                            rotateLeft(node.getParent());
+                            rotateRight(node.getParent());
                             node = this.root;
                         }
                     }
@@ -215,7 +215,7 @@ class RedBlackTree {
         node2.setParent(node1.getParent());
     }
 
-    private Record find(int value) {
+    public Record find(int value) {
         //Find the first occurrence of given value
         //Null if given value doesn't occur in this set
         if (this.root == this.sentinel) {
@@ -234,6 +234,37 @@ class RedBlackTree {
                 return null;
             else
                 return temp;
+        }
+    }
+
+    public void findPRO(int value) {
+        if (this.root == this.sentinel) {
+            System.out.println("Nie mozna znalezc danego elementy");
+        } else {
+            Record temp = this.root;
+
+            int depth = 1;
+            int blackdepth = 1;
+
+            while (temp != this.sentinel && temp.getValue() != value) {
+                if (temp.getValue() > value)
+                    temp = temp.getLeftSon();
+                else
+                    temp = temp.getRightSon();
+
+                depth++;
+                if(!temp.isRed())
+                    blackdepth++;
+            }
+
+            if(temp != this.sentinel) {
+                System.out.println("\nZnaleziono wartosc: " + temp);
+                System.out.println("Kolor: " + (temp.isRed() ? "Czerwony" : "Czarny"));
+                System.out.println("Glebokosc: " + depth);
+                System.out.println("Czarna wysokosc: " + blackdepth + "\n");
+            } else {
+                System.out.println("Nie znaleziono wartosci");
+            }
         }
     }
 
