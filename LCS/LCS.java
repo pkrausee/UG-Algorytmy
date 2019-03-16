@@ -7,7 +7,7 @@ abstract class LCS {
     }
 
     public static void print (String x, String y) {
-        printLCS(x, getLCSvalues(x, y), x.length(), y.length());
+        printLCS(x, y, getLCSvalues(x, y), x.length(), y.length());
 
         System.out.println();
     }
@@ -43,17 +43,17 @@ abstract class LCS {
         return values;
     }
 
-    private static void printLCS(String x, int[][] values, int xLen, int yLen) {
+    private static void printLCS(String x, String y, int[][] values, int xLen, int yLen) {
         if (xLen == 0 || yLen == 0)
             System.out.print("");
         else {
-            if (values[xLen][yLen] == values[xLen - 1][yLen - 1] + 1) {
-                printLCS(x, values, xLen - 1, yLen - 1);
+            if (x.charAt(xLen - 1) == y.charAt(yLen - 1)) {
+                printLCS(x, y, values, xLen - 1, yLen - 1);
                 System.out.print(x.charAt(xLen - 1));
             } else if (values[xLen][yLen] == values[xLen - 1][yLen]) {
-                printLCS(x, values, xLen - 1, yLen);
+                printLCS(x, y, values, xLen - 1, yLen);
             } else
-                printLCS(x, values, xLen, yLen - 1);
+                printLCS(x, y, values, xLen, yLen - 1);
         }
     }
 
