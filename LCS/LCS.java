@@ -3,17 +3,26 @@ import java.util.List;
 
 abstract class LCS {
     public static int length (String x, String y) {
-        return getLCSvalues(x, y)[x.length()][y.length()];
+        return getLCS_values(x, y)[x.length()][y.length()];
+    }
+
+    public static int lengthOptimal(String x, String y) {
+        //Probably slower but saves some memory
+
+        if(x.length() < y.length())
+            return getLCS_memorySave(x, y)[1][x.length()];
+        else
+            return getLCS_memorySave(x, y)[1][y.length()];
     }
 
     public static void print (String x, String y) {
-        printLCS(x, y, getLCSvalues(x, y), x.length(), y.length());
+        printLCS(x, y, getLCS_values(x, y), x.length(), y.length());
 
         System.out.println();
     }
 
     public static void printAll(String x, String y) {
-        List<String> temp = printAllLCS(x, y, getLCSvalues(x, y), x.length(), y.length());
+        List<String> temp = printAllLCS(x, y, getLCS_values(x, y), x.length(), y.length());
 
         for(String lcs : temp)
             System.out.print(lcs + " ");
@@ -21,7 +30,7 @@ abstract class LCS {
         System.out.println();
     }
 
-    private static int[][] getLCSvalues(String x, String y) {
+    private static int[][] getLCS_values(String x, String y) {
         int xLen = x.length();
         int yLen = y.length();
 
@@ -37,6 +46,42 @@ abstract class LCS {
                     else
                         values[i][j] = values[i][j - 1];
                 }
+            }
+        }
+
+        return values;
+    }
+
+    private static int[][] getLCS_memorySave(String x, String y) {
+        //Memory saving version
+        //Saves only 2 rows
+        if(x.length() < y.length()) {
+            //Swap to get shorter string
+            String temp = x;
+            x = y;
+            y = temp;
+        }
+
+        int xLen = x.length();
+        int yLen = y.length();
+
+        int[][] values = new int[2][yLen + 1];
+
+        for(int i = 1; i <= xLen; i++) {
+            for(int j = 1;j <= yLen; j++) {
+                if (x.charAt(i - 1) == y.charAt(j - 1))
+                    values[1][j] = values[0][j - 1] + 1;
+                else {
+                    if (values[0][j] >= values[1][j - 1])
+                        values[1][j] = values[0][j];
+                    else
+                        values[1][j] = values[1][j - 1];
+                }
+            }
+
+            if(i != xLen) {
+                System.arraycopy(values[1], 0, values[0], 0, yLen + 1);
+                values[1] = new int[yLen + 1];
             }
         }
 
