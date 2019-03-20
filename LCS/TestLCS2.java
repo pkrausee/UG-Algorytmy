@@ -19,10 +19,11 @@ class TestLCS2 {
 
         long startTime = System.nanoTime();
 
-//        System.out.println(LCS.length(x, y));
-        System.out.println(LCS.lengthOptimal(x, y));
+        System.out.println(LCS.length(x, y));
+//        System.out.println(LCS.lengthOptimal(x, y));
 
         LCS.print(x, y);
+//        LCS.printIter(x, y);
 
         long endTime = System.nanoTime();
 

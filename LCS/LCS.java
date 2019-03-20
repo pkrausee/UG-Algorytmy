@@ -21,6 +21,10 @@ abstract class LCS {
         System.out.println();
     }
 
+    public static void printIter (String x, String y) {
+        System.out.println(printLCSiter(x, y, getLCS_values(x, y), x.length(), y.length()));
+    }
+
     public static void printAll(String x, String y) {
         List<String> temp = printAllLCS(x, y, getLCS_values(x, y), x.length(), y.length());
 
@@ -100,6 +104,23 @@ abstract class LCS {
             } else
                 printLCS(x, y, values, xLen, yLen - 1);
         }
+    }
+
+    private static String printLCSiter(String x, String y, int[][] values, int xLen, int yLen) {
+        StringBuilder sf = new StringBuilder("");
+
+        while(xLen != 0 && yLen != 0) {
+            if (x.charAt(xLen - 1) == y.charAt(yLen - 1)) {
+                sf.append(x.charAt(xLen - 1));
+                xLen--;
+                yLen--;
+            } else if (values[xLen][yLen] == values[xLen - 1][yLen]) {
+                xLen--;
+            } else
+                yLen--;
+        }
+
+        return sf.reverse().toString();
     }
 
     private static List<String> printAllLCS(String x, String y, int[][] values, int xLen, int yLen) {
