@@ -10,6 +10,8 @@ class BTree {
     }
 
     private void split(Node node, int pos) {
+//        System.out.println("split");
+
         //Split son on given position
         Node toSplit = node.getSons().get(pos);
 
