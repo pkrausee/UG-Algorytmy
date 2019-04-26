@@ -11,10 +11,16 @@ public class FileBTree {
     private String root;
     private int rank;
 
-    int files;
+    private int files;
+
+    private int saveOperations;
+    private int readOperations;
+
 
     public FileBTree(int rank) {
-        this.files = 1;
+        this.files = 0;
+        this.saveOperations = 0;
+        this.readOperations = 0;
 
         this.root = getFilename();
         saveNode(new FileNode(), root);
@@ -23,6 +29,8 @@ public class FileBTree {
     }
 
     private String getFilename() {
+        files++;
+
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss.SSS");
 
@@ -31,9 +39,10 @@ public class FileBTree {
 
     private void saveNode(FileNode node, String filename) {
         try {
-            // Just in case...
-            if (!Files.deleteIfExists(Paths.get("./files/" + filename + ".txt")))
-                files++;
+            if (!Files.exists(Paths.get("./files")))
+                Files.createDirectory(Paths.get("./files"));
+
+            saveOperations++;
 
             PrintWriter pw = new PrintWriter(new FileOutputStream("./files/" + filename + ".txt"));
 
@@ -59,6 +68,8 @@ public class FileBTree {
         FileNode node = new FileNode();
 
         try {
+            readOperations++;
+
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("./files/" + filename + ".txt")));
 
             node.setLeaf(br.readLine().equals("1"));
@@ -354,7 +365,7 @@ public class FileBTree {
                 return i;
             }
 
-        return null;
+        return 0;
     }
 
     private void deleteKey(String nodeFilename, int key) {
@@ -484,6 +495,28 @@ public class FileBTree {
         traverse(node.getSons().get(node.getKeys().size()));
     }
 
+    public double clearTree() {
+        //Return clearing time... just for fancy printing
+
+        File[] files = (new File("./files")).listFiles();
+        long start = 0, end = 0;
+
+        try {
+            start = System.nanoTime();
+            if (files != null) {
+                for (File f : files)
+                    f.delete();
+            }
+
+            Files.delete(Paths.get("./files"));
+            end = System.nanoTime();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return (double)(end - start) / 100000000;
+    }
+
     public String getRoot() {
         return root;
     }
@@ -502,5 +535,29 @@ public class FileBTree {
 
     public void setRank(int rank) {
         this.rank = rank;
+    }
+
+    public int getFiles() {
+        return files;
+    }
+
+    public void setFiles(int files) {
+        this.files = files;
+    }
+
+    public int getSaveOperations() {
+        return saveOperations;
+    }
+
+    public void setSaveOperations(int saveOperations) {
+        this.saveOperations = saveOperations;
+    }
+
+    public int getReadOperations() {
+        return readOperations;
+    }
+
+    public void setReadOperations(int readOperations) {
+        this.readOperations = readOperations;
     }
 }

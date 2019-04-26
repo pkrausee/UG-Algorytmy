@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 
-class Node {
+class RamNode {
     private ArrayList<Integer> keys;
-    private ArrayList<Node> sons;
+    private ArrayList<RamNode> sons;
     private boolean isLeaf;
 
-    public Node() {
+    public RamNode() {
         this.keys = new ArrayList<Integer>();
-        this.sons = new ArrayList<Node>();
+        this.sons = new ArrayList<RamNode>();
         this.isLeaf = true;
     }
 
@@ -23,11 +23,11 @@ class Node {
         this.keys = keys;
     }
 
-    public ArrayList<Node> getSons() {
+    public ArrayList<RamNode> getSons() {
         return sons;
     }
 
-    public void setSons(ArrayList<Node> sons) {
+    public void setSons(ArrayList<RamNode> sons) {
         this.sons = sons;
     }
 

@@ -1,21 +1,21 @@
 import java.util.Collections;
 
-class BTree {
-    private Node root;
+class RamBTree {
+    private RamNode root;
     private int rank;
 
-    public BTree(int rank) {
-        this.root = new Node();
+    public RamBTree(int rank) {
+        this.root = new RamNode();
         this.rank = rank;
     }
 
-    private void split(Node node, int pos) {
+    private void split(RamNode node, int pos) {
 //        System.out.println("split");
 
         //Split son on given position
-        Node toSplit = node.getSons().get(pos);
+        RamNode toSplit = node.getSons().get(pos);
 
-        Node newSon = new Node();
+        RamNode newSon = new RamNode();
         newSon.setLeaf(toSplit.isLeaf());
 
         //Copy keys
@@ -41,7 +41,7 @@ class BTree {
         toSplit.getKeys().subList(0, rank).clear();
     }
 
-    private void insertNF(Node node, int key) {
+    private void insertNF(RamNode node, int key) {
 //        System.out.println("insert " + key);
 
         if (node.isLeaf()) {
@@ -73,10 +73,10 @@ class BTree {
         }
     }
 
-    private void join(Node father, Node leftSon, Node rightSon, int pos) {
+    private void join(RamNode father, RamNode leftSon, RamNode rightSon, int pos) {
 //        System.out.println("Join");
 
-        Node joinedNode = new Node();
+        RamNode joinedNode = new RamNode();
         joinedNode.setLeaf(leftSon.isLeaf());
 
         //Copy keys
@@ -107,7 +107,7 @@ class BTree {
         father.getSons().add(pos, joinedNode);
     }
 
-    private void leftRotate(Node node, int pos) {
+    private void leftRotate(RamNode node, int pos) {
 //        System.out.println("Left rotate ");
 
         node.getSons().get(pos).getKeys().add(node.getKeys().get(pos));
@@ -119,7 +119,7 @@ class BTree {
         Collections.sort(node.getKeys());
     }
 
-    private void rightRotate(Node node, int pos) {
+    private void rightRotate(RamNode node, int pos) {
 //        System.out.println("Right rotate");
 
         node.getSons().get(pos + 1).getKeys().add(0, node.getKeys().get(pos));
@@ -133,7 +133,7 @@ class BTree {
         Collections.sort(node.getKeys());
     }
 
-    private int deleteMin(Node node) {
+    private int deleteMin(RamNode node) {
 //        System.out.println("deleteMin");
 
         if (node.isLeaf()) {
@@ -143,12 +143,12 @@ class BTree {
 
             return min;
         } else {
-            Node firstSon = node.getSons().get(0);
+            RamNode firstSon = node.getSons().get(0);
 
             if (firstSon.getKeys().size() > rank - 1) {
                 deleteMin(firstSon);
             } else {
-                Node secondSon = node.getSons().get(1);
+                RamNode secondSon = node.getSons().get(1);
 
                 if (secondSon.getKeys().size() > rank - 1) {
                     leftRotate(node, 0);
@@ -163,7 +163,7 @@ class BTree {
         return 0;
     }
 
-    private int deleteMax(Node node) {
+    private int deleteMax(RamNode node) {
 //        System.out.println("deleteMax");
 
         int lastId = node.getKeys().size() - 1;
@@ -175,12 +175,12 @@ class BTree {
 
             return max;
         } else {
-            Node firstSon = node.getSons().get(lastId);
+            RamNode firstSon = node.getSons().get(lastId);
 
             if (firstSon.getKeys().size() > rank - 1) {
                 deleteMax(firstSon);
             } else {
-                Node secondSon = node.getSons().get(lastId - 1);
+                RamNode secondSon = node.getSons().get(lastId - 1);
 
                 if (secondSon.getKeys().size() > rank - 1) {
                     rightRotate(node, lastId);
@@ -195,7 +195,7 @@ class BTree {
         return 0;
     }
 
-    private Integer findId(Node node, int key) {
+    private Integer findId(RamNode node, int key) {
         for (int i = 0; i < node.getKeys().size(); i++)
             if (node.getKeys().get(i) == key){
 //                System.out.println("Found id: " + i);
@@ -205,15 +205,15 @@ class BTree {
         return null;
     }
 
-    private void deleteKey(Node node, int key) {
+    private void deleteKey(RamNode node, int key) {
         if (node.getKeys().contains(key)) {
             int pos = findId(node, key);
 
             if (node.isLeaf()) {
                 node.getKeys().remove(pos);
             } else {
-                Node leftSon = node.getSons().get(pos);
-                Node rightSon = node.getSons().get(pos + 1);
+                RamNode leftSon = node.getSons().get(pos);
+                RamNode rightSon = node.getSons().get(pos + 1);
 
                 if (leftSon.getKeys().size() > rank - 1)
                     node.getKeys().set(pos, deleteMax(leftSon));
@@ -230,9 +230,9 @@ class BTree {
             while(pos < node.getKeys().size() && node.getKeys().get(pos) < key)
                 pos++;
 
-            Node leftSon = (pos > 0) ? node.getSons().get(pos - 1) : null;
-            Node midSon = node.getSons().get(pos);
-            Node rightSon = (pos < node.getSons().size() - 1) ? node.getSons().get(pos + 1) : null;
+            RamNode leftSon = (pos > 0) ? node.getSons().get(pos - 1) : null;
+            RamNode midSon = node.getSons().get(pos);
+            RamNode rightSon = (pos < node.getSons().size() - 1) ? node.getSons().get(pos + 1) : null;
 
             if(midSon.getKeys().size() > rank - 1){
                 deleteKey(midSon, key);
@@ -270,7 +270,7 @@ class BTree {
 //            System.out.println("split root");
 
             //Split root
-            Node newRoot = new Node();
+            RamNode newRoot = new RamNode();
 
             newRoot.setLeaf(false);
             newRoot.getSons().add(this.root);
@@ -285,7 +285,7 @@ class BTree {
         }
     }
 
-    public void search(Node node, int key) {
+    public void search(RamNode node, int key) {
         int iter = 0;
         while (iter < node.getKeys().size() && key > node.getKeys().get(iter))
             iter++;
@@ -299,7 +299,7 @@ class BTree {
         }
     }
 
-    public void traverse(Node node) {
+    public void traverse(RamNode node) {
         int i;
         if (node.isLeaf()) {
             System.out.print(node.getKeys() + " ");
@@ -314,11 +314,11 @@ class BTree {
         traverse(node.getSons().get(node.getKeys().size()));
     }
 
-    public Node getRoot() {
+    public RamNode getRoot() {
         return root;
     }
 
-    public void setRoot(Node root) {
+    public void setRoot(RamNode root) {
         this.root = root;
     }
 
