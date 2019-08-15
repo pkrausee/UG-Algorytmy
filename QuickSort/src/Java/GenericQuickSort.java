@@ -5,19 +5,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class QuickSort {
-    private void swap(List<Integer> a, int index1, int index2) {
-        int temp = a.get(index1);
+public class GenericQuickSort<TType extends Comparable<TType>> {
+    private void swap(List<TType> a, int index1, int index2) {
+        TType temp = a.get(index1);
         a.set(index1, a.get(index2));
         a.set(index2, temp);
     }
 
-    private int partition(List<Integer> a, int low, int high) {
-        int pivot = a.get(high);
+    private int partition(List<TType> a, int low, int high) {
+        TType pivot = a.get(high);
         int i = low - 1;
 
         for (int j = low; j <= high - 1; j++) {
-            if (a.get(j) <= pivot) {
+            if (a.get(j).compareTo(pivot) <= 0) {
                 i++;
                 swap(a, i, j);
             }
@@ -28,7 +28,7 @@ public class QuickSort {
         return (i + 1);
     }
 
-    private int randomizedPartition(List<Integer> a, int low, int high) {
+    private int randomizedPartition(List<TType> a, int low, int high) {
         Random rand = new Random();
         int pivot = rand.nextInt(high - low) + low;
 
@@ -37,21 +37,21 @@ public class QuickSort {
         return partition(a, low, high);
     }
 
-    private int medianPartition(List<Integer> a, int low, int high) {
-        List<Integer> b = new ArrayList<>();
+    private int medianPartition(List<TType> a, int low, int high) {
+        List<TType> b = new ArrayList<>();
         b.add(a.get(low));
         b.add(a.get(low + ((high - low) / 2)));
         b.add(a.get(high));
         Collections.sort(b);
 
-        int pivot = b.get(1);
+        TType pivot = b.get(1);
 
-        swap(a, pivot, high);
+        swap(a, a.indexOf(pivot), high);
 
         return partition(a, low, high);
     }
 
-    public void quickSort(List<Integer> a, int low, int high) {
+    public void quickSort(List<TType> a, int low, int high) {
         if (low < high) {
             int q = partition(a, low, high);
             quickSort(a, low, q - 1);
@@ -59,7 +59,7 @@ public class QuickSort {
         }
     }
 
-    public void randomizedQuickSort(List<Integer> a, int low, int high) {
+    public void randomizedQuickSort(List<TType> a, int low, int high) {
         if (low < high) {
             int q = randomizedPartition(a, low, high);
             randomizedQuickSort(a, low, q - 1);
@@ -67,7 +67,7 @@ public class QuickSort {
         }
     }
 
-    public void medianQuickSort(List<Integer> a, int low, int high) {
+    public void medianQuickSort(List<TType> a, int low, int high) {
         if (low < high) {
             int q = medianPartition(a, low, high);
             medianQuickSort(a, low, q - 1);
@@ -75,7 +75,7 @@ public class QuickSort {
         }
     }
 
-    private void quickSortBeforeInsertion(List<Integer> a, int low, int high, int c) {
+    private void quickSortBeforeInsertion(List<TType> a, int low, int high, int c) {
         if (low < high && (high - low + 1) > c) {
             int q = partition(a, low, high);
             quickSortWithBubble(a, low, q - 1, c);
@@ -83,17 +83,17 @@ public class QuickSort {
         }
     }
 
-    public void quickSortWithInsertion(List<Integer> a, int low, int high, int c) {
+    public void quickSortWithInsertion(List<TType> a, int low, int high, int c) {
         quickSortBeforeInsertion(a, low, high, c);
 
-        InsertionSort i = new InsertionSort();
+        GenericInsertionSort<TType> i = new GenericInsertionSort<>();
         i.insertionSort(a);
     }
 
-    public void quickSortWithBubble(List<Integer> a, int low, int high, int c) {
+    public void quickSortWithBubble(List<TType> a, int low, int high, int c) {
         if (low < high) {
             if ((high - low + 1) < c) {
-                BubbleSort b = new BubbleSort();
+                GenericBubbleSort<TType> b = new GenericBubbleSort<>();
                 b.bubbleSort(a, low, high);
             } else {
                 int q = partition(a, low, high);

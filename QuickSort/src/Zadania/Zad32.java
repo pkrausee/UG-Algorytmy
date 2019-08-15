@@ -6,10 +6,8 @@ import Java.QuickSort;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Zad32
-{
-    public static void main(String[] args)
-    {
+public class Zad32 {
+    public static void main(String[] args) {
         QuickSort q = new QuickSort();
         Generator g = new Generator();
         List<Integer> numbers = new ArrayList<Integer>();
@@ -21,8 +19,7 @@ public class Zad32
         long sTime, eTime, gen1Time, gen2Time, randTime;
 
         int amount = 5000;
-        for(int i = 500; i <= amount; i+=500)
-        {
+        for (int i = 500; i <= amount; i += 500) {
             g.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
             q.quickSort(numbers, 0, numbers.size() - 1);

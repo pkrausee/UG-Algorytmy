@@ -6,10 +6,8 @@ import Java.QuickSort;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Zad33
-{
-    public static void main(String args[])
-    {
+public class Zad33 {
+    public static void main(String args[]) {
         QuickSort q = new QuickSort();
         Generator g = new Generator();
         List<Integer> numbers = new ArrayList<Integer>();
@@ -26,8 +24,7 @@ public class Zad33
         long alg3TimeR = 0;
 
         int amount = 5000;
-        for(int i = 500; i <= amount; i+=500)
-        {
+        for (int i = 500; i <= amount; i += 500) {
             g.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
             q.quickSort(numbers, 0, numbers.size() - 1);
@@ -48,8 +45,7 @@ public class Zad33
             eTime = System.currentTimeMillis();
             alg3Time = eTime - sTime;
 
-            for(int j = 0; j < 10; j++)
-            {
+            for (int j = 0; j < 10; j++) {
                 g.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
                 q.quickSort(numbers, 0, numbers.size() - 1);
