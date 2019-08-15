@@ -1,11 +1,16 @@
+package Zadania;
+
+import Java.Generator;
+import Java.QuickSort;
+
 import java.util.ArrayList;
 import java.util.List;
 
-class Zad34
+public class Zad35
 {
     public static void main(String args[])
     {
-        Quick q = new Quick();
+        QuickSort q = new QuickSort();
         Generator g = new Generator();
         List<Integer> numbers = new ArrayList<Integer>();
 
@@ -22,15 +27,15 @@ class Zad34
         int amount = 5000;
         for(int i = 500; i <= amount; i+=500)
         {
-            g.generateValues1(numbers, i);
+            g.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.quicksort(numbers, 0, numbers.size() - 1);
+            q.quickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             alg1Time = eTime - sTime;
 
-            g.generateValues1(numbers, i);
+            g.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.quicksortWithInsertion(numbers, 0, numbers.size() - 1, 5);
+            q.quickSortWithBubble(numbers, 0, numbers.size() - 1, 5);
             eTime = System.currentTimeMillis();
             alg2Time = eTime - sTime;
 
@@ -38,13 +43,13 @@ class Zad34
             {
                 g.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
-                q.quicksort(numbers, 0, numbers.size() - 1);
+                q.quickSort(numbers, 0, numbers.size() - 1);
                 eTime = System.currentTimeMillis();
                 alg1TimeR += eTime - sTime;
 
                 g.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
-                q.quicksortWithInsertion(numbers, 0, numbers.size() - 1, 5);
+                q.quickSortWithBubble(numbers, 0, numbers.size() - 1, 5);
                 eTime = System.currentTimeMillis();
                 alg2TimeR += eTime - sTime;
             }

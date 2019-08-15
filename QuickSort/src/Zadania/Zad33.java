@@ -1,11 +1,16 @@
+package Zadania;
+
+import Java.Generator;
+import Java.QuickSort;
+
 import java.util.ArrayList;
 import java.util.List;
 
-class Zad33
+public class Zad33
 {
     public static void main(String args[])
     {
-        Quick q = new Quick();
+        QuickSort q = new QuickSort();
         Generator g = new Generator();
         List<Integer> numbers = new ArrayList<Integer>();
 
@@ -23,23 +28,23 @@ class Zad33
         int amount = 5000;
         for(int i = 500; i <= amount; i+=500)
         {
-            g.generateValues1(numbers, i);
+            g.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.quicksort(numbers, 0, numbers.size() - 1);
+            q.quickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             alg1Time = eTime - sTime;
 
 
-            g.generateValues1(numbers, i);
+            g.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.randomizedQuicksort(numbers, 0, numbers.size() - 1);
+            q.randomizedQuickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             alg2Time = eTime - sTime;
 
 
-            g.generateValues1(numbers, i);
+            g.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.medianQuicksort(numbers, 0, numbers.size() - 1);
+            q.medianQuickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             alg3Time = eTime - sTime;
 
@@ -47,21 +52,21 @@ class Zad33
             {
                 g.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
-                q.quicksort(numbers, 0, numbers.size() - 1);
+                q.quickSort(numbers, 0, numbers.size() - 1);
                 eTime = System.currentTimeMillis();
                 alg1TimeR += eTime - sTime;
 
 
                 g.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
-                q.randomizedQuicksort(numbers, 0, numbers.size() - 1);
+                q.randomizedQuickSort(numbers, 0, numbers.size() - 1);
                 eTime = System.currentTimeMillis();
                 alg2TimeR += eTime - sTime;
 
 
                 g.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
-                q.medianQuicksort(numbers, 0, numbers.size() - 1);
+                q.medianQuickSort(numbers, 0, numbers.size() - 1);
                 eTime = System.currentTimeMillis();
                 alg3TimeR += eTime - sTime;
             }

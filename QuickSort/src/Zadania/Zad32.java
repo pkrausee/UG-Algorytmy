@@ -1,11 +1,16 @@
+package Zadania;
+
+import Java.Generator;
+import Java.QuickSort;
+
 import java.util.ArrayList;
 import java.util.List;
 
-class Zad32
+public class Zad32
 {
-    public static void main(String args[])
+    public static void main(String[] args)
     {
-        Quick q = new Quick();
+        QuickSort q = new QuickSort();
         Generator g = new Generator();
         List<Integer> numbers = new ArrayList<Integer>();
 
@@ -18,21 +23,21 @@ class Zad32
         int amount = 5000;
         for(int i = 500; i <= amount; i+=500)
         {
-            g.generateValues1(numbers, i);
+            g.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.quicksort(numbers, 0, numbers.size() - 1);
+            q.quickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             gen1Time = eTime - sTime;
 
-            g.generateValues2(numbers, i);
+            g.generateDescendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.quicksort(numbers, 0, numbers.size() - 1);
+            q.quickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             gen2Time = eTime - sTime;
 
             g.generateRandomValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.quicksort(numbers, 0, numbers.size() - 1);
+            q.quickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             randTime = eTime - sTime;
 
