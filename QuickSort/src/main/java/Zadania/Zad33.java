@@ -1,15 +1,15 @@
 package Zadania;
 
-import Java.Generator;
+import Java.NumberGenerator;
 import Java.QuickSort;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Zad33 {
-    public static void main(String args[]) {
-        QuickSort q = new QuickSort();
-        Generator g = new Generator();
+public class Zad33
+{
+    public static void main(String[] args)
+    {
         List<Integer> numbers = new ArrayList<Integer>();
 
         System.out.println("Porowanie czasu w milisekundach dla: ");
@@ -24,51 +24,52 @@ public class Zad33 {
         long alg3TimeR = 0;
 
         int amount = 5000;
-        for (int i = 500; i <= amount; i += 500) {
-            g.generateAscendingValues(numbers, i);
+        for (int i = 500; i <= amount; i += 500)
+        {
+            NumberGenerator.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.quickSort(numbers, 0, numbers.size() - 1);
+            QuickSort.quickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             alg1Time = eTime - sTime;
 
 
-            g.generateAscendingValues(numbers, i);
+            NumberGenerator.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.randomizedQuickSort(numbers, 0, numbers.size() - 1);
+            QuickSort.randomizedQuickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             alg2Time = eTime - sTime;
 
 
-            g.generateAscendingValues(numbers, i);
+            NumberGenerator.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.medianQuickSort(numbers, 0, numbers.size() - 1);
+            QuickSort.medianQuickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             alg3Time = eTime - sTime;
 
-            for (int j = 0; j < 10; j++) {
-                g.generateRandomValues(numbers, i);
+            for (int j = 0; j < 10; j++)
+            {
+                NumberGenerator.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
-                q.quickSort(numbers, 0, numbers.size() - 1);
+                QuickSort.quickSort(numbers, 0, numbers.size() - 1);
                 eTime = System.currentTimeMillis();
                 alg1TimeR += eTime - sTime;
 
 
-                g.generateRandomValues(numbers, i);
+                NumberGenerator.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
-                q.randomizedQuickSort(numbers, 0, numbers.size() - 1);
+                QuickSort.randomizedQuickSort(numbers, 0, numbers.size() - 1);
                 eTime = System.currentTimeMillis();
                 alg2TimeR += eTime - sTime;
 
 
-                g.generateRandomValues(numbers, i);
+                NumberGenerator.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
-                q.medianQuickSort(numbers, 0, numbers.size() - 1);
+                QuickSort.medianQuickSort(numbers, 0, numbers.size() - 1);
                 eTime = System.currentTimeMillis();
                 alg3TimeR += eTime - sTime;
             }
 
             System.out.format(format, i, alg1Time, alg2Time, alg3Time, alg1TimeR / 10, alg2TimeR / 10, alg3TimeR / 10);
         }
-
     }
 }

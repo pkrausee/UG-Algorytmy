@@ -1,15 +1,15 @@
 package Zadania;
 
-import Java.Generator;
+import Java.NumberGenerator;
 import Java.QuickSort;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Zad35 {
-    public static void main(String args[]) {
-        QuickSort q = new QuickSort();
-        Generator g = new Generator();
+public class Zad34
+{
+    public static void main(String[] args)
+    {
         List<Integer> numbers = new ArrayList<Integer>();
 
         System.out.println("Porowanie czasu w milisekundach dla: ");
@@ -23,29 +23,31 @@ public class Zad35 {
         long alg2TimeR = 0;
 
         int amount = 5000;
-        for (int i = 500; i <= amount; i += 500) {
-            g.generateAscendingValues(numbers, i);
+        for (int i = 500; i <= amount; i += 500)
+        {
+            NumberGenerator.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.quickSort(numbers, 0, numbers.size() - 1);
+            QuickSort.quickSort(numbers, 0, numbers.size() - 1);
             eTime = System.currentTimeMillis();
             alg1Time = eTime - sTime;
 
-            g.generateAscendingValues(numbers, i);
+            NumberGenerator.generateAscendingValues(numbers, i);
             sTime = System.currentTimeMillis();
-            q.quickSortWithBubble(numbers, 0, numbers.size() - 1, 5);
+            QuickSort.quickSortWithInsertion(numbers, 0, numbers.size() - 1, 5);
             eTime = System.currentTimeMillis();
             alg2Time = eTime - sTime;
 
-            for (int j = 0; j < 10; j++) {
-                g.generateRandomValues(numbers, i);
+            for (int j = 0; j < 10; j++)
+            {
+                NumberGenerator.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
-                q.quickSort(numbers, 0, numbers.size() - 1);
+                QuickSort.quickSort(numbers, 0, numbers.size() - 1);
                 eTime = System.currentTimeMillis();
                 alg1TimeR += eTime - sTime;
 
-                g.generateRandomValues(numbers, i);
+                NumberGenerator.generateRandomValues(numbers, i);
                 sTime = System.currentTimeMillis();
-                q.quickSortWithBubble(numbers, 0, numbers.size() - 1, 5);
+                QuickSort.quickSortWithInsertion(numbers, 0, numbers.size() - 1, 5);
                 eTime = System.currentTimeMillis();
                 alg2TimeR += eTime - sTime;
             }
