@@ -1,28 +1,30 @@
 import java.util.ArrayList;
+import java.util.List;
 
 
 class Radix
 {
-    public void radixSort(ArrayList<Record> a, int wordLength)
+    public void radixSort(List<Record> a, int wordLength)
     {
         fillGaps(a, maxLength(a));
 
         int maxValue = (char)27;
-        ArrayList<Record> b = new ArrayList<>();
-        ArrayList<Integer> c = new ArrayList<>();
+        ArrayList<Record> b = new ArrayList<Record>();
+        ArrayList<Integer> c = new ArrayList<Integer>();
 
         if(Character.isLetter(maxValue))
+        {
             maxValue = maxValue - 96;
+        }
 
         for(int i = wordLength - 1; i >= 0; i--)
         {
             fillWithZerosI(c, maxValue);
             fillWithZerosR(b, a.size());
 
-            for(int j = 0; j < a.size(); j++)
-            {
-                int currChar = a.get(j).getSurname().charAt(i);
-                if(currChar > 96)
+            for (Record record : a) {
+                int currChar = record.getSurname().charAt(i);
+                if (currChar > 96)
                     currChar -= 95;
                 else
                     currChar -= 26;
@@ -31,7 +33,9 @@ class Radix
             }
 
             for(int j = 1; j < maxValue; j++)
+            {
                 c.set(j, c.get(j) + c.get(j - 1));
+            }
 
             for(int j = a.size() - 1; j >= 0; j--)
             {
@@ -46,13 +50,15 @@ class Radix
             }
 
             for(int j = 0; j < a.size(); j++)
+            {
                 a.set(j, b.get(j));
+            }
         }
 
         delGaps(a);
     }
 
-    private void fillWithZerosI(ArrayList<Integer> a, int amount)
+    private void fillWithZerosI(List<Integer> a, int amount)
     {
         a.clear();
 
@@ -62,7 +68,7 @@ class Radix
         }
     }
 
-    private void fillWithZerosR(ArrayList<Record> a, int amount)
+    private void fillWithZerosR(List<Record> a, int amount)
     {
         a.clear();
 
@@ -72,11 +78,11 @@ class Radix
         }
     }
 
-    private void fillGaps(ArrayList<Record> a, int wordLength)
+    private void fillGaps(List<Record> a, int wordLength)
     {
         for (Record aa : a)
         {
-            StringBuffer sb = new StringBuffer(aa.getSurname());
+            StringBuilder sb = new StringBuilder(aa.getSurname());
             for(int i = 0; i < wordLength - aa.getSurname().length(); i++)
             {
                 sb.append((char)27);
@@ -85,25 +91,28 @@ class Radix
         }
     }
 
-    private void delGaps(ArrayList<Record> a)
+    private void delGaps(List<Record> a)
     {
         for (Record aa : a)
         {
-            StringBuffer sb = new StringBuffer(aa.getSurname());
+            StringBuilder sb = new StringBuilder(aa.getSurname());
+
             for(int i = sb.length() - 1; i >= 0; i--)
             {
                 if(aa.getSurname().charAt(i) == (char)27)
                     sb.deleteCharAt(i);
             }
+
             aa.setSurname(sb.toString());
         }
     }
 
-    private int maxLength(ArrayList<Record> a)
+    private int maxLength(List<Record> a)
     {
         int maxLength = 0;
 
-        for (Record aa : a) {
+        for (Record aa : a)
+        {
             if(maxLength < aa.getSurname().length())
                 maxLength = aa.getSurname().length();
         }

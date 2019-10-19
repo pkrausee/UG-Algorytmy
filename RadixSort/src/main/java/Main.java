@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 
 class Main
@@ -11,7 +12,7 @@ class Main
         Utilities u = new Utilities();
         FileSupport f = new FileSupport();
 
-        ArrayList<Record> a = new ArrayList<>();
+        List<Record> a = new ArrayList<Record>();
         StringBuffer sB = new StringBuffer("Pomiar czasu:\n");
         long startTime, endTime;
 
@@ -45,6 +46,5 @@ class Main
         f.saveRecordsToFile(a, "posortowane.txt");
 
         System.out.println(sB.toString());
-
     }
 }

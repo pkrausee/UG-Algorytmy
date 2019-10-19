@@ -1,18 +1,18 @@
-import java.util.ArrayList;
+import java.util.List;
 
 
 class Quick
 {
-    private void swap(ArrayList<Record> a, int index1, int index2)
+    private void swap(List<Record> a, int index1, int index2)
     {
         Record temp = a.get(index1);
         a.set(index1, a.get(index2));
         a.set(index2, temp);
     }
 
-    private int partition(ArrayList<Record> a, int low, int high)
+    private int partition(List<Record> a, int low, int high)
     {
-        String pivot = a.get(high).getSurname(); // element wyzn podzial
+        String pivot = a.get(high).getSurname();
         int i = low - 1;
 
         for (int j = low; j <= high - 1; j++)
@@ -29,7 +29,7 @@ class Quick
         return (i + 1);
     }
 
-    public void quickSort(ArrayList<Record> a, int low, int high)
+    public void quickSort(List<Record> a, int low, int high)
     {
         if (low < high)
         {
