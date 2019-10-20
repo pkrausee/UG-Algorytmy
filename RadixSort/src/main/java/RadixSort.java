@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-class Radix
+class RadixSort
 {
     public void radixSort(List<Record> a, int wordLength)
     {

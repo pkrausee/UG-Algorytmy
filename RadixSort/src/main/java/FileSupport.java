@@ -3,15 +3,15 @@ import java.util.List;
 
 class FileSupport
 {
-    public void getRecordsFromFile(List<Record> a)
+    public void getRecordsFromFile(List<Record> a, String filename)
     {
         try
         {
+
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            File file = new File(classLoader.getResource(filename).getFile());
 
-            File nazwiska = new File(classLoader.getResource("nazwiska.txt").getFile());
-
-            FileReader fr = new FileReader(nazwiska);
+            FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
 
             a.clear();
@@ -19,9 +19,9 @@ class FileSupport
             String line;
             while ((line = br.readLine()) != null)
             {
-                String[] temp = line.split("\\s+");
+                String[] split = line.split("\\s+");
 
-                a.add(new Record(temp[0], temp[1]));
+                a.add(new Record(split[0], split[1]));
             }
 
             fr.close();

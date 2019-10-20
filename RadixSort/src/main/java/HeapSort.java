@@ -1,7 +1,7 @@
 import java.util.List;
 
 
-class Heap
+class HeapSort
 {
     private void swap(List<Record> tab, int a, int b)
     {

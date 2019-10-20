@@ -1,7 +1,7 @@
 import java.util.List;
 
 
-class Quick
+class QuickSort
 {
     private void swap(List<Record> a, int index1, int index2)
     {
